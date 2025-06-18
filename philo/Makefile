@@ -1,23 +1,33 @@
-NAME = philo
+NAME	= philo
+CC		= cc
+CFLAGS	= -Werror -Wall -Wextra -pthread
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+SRC_PATH = src/
+OBJ_PATH = objects/
 
-SRCS = main.c parsing.c philo_utils.c print_errors.c
-OBJS = $(SRCS:%.c=%.o)
+SRC		=	main.c \
+			parsing.c \
+			philo_utils.c \
+			print_errors.c \
+			init.c \
 
-HEADER = philo.h
+SRCS	= $(addprefix $(SRC_PATH), $(SRC))
+OBJ		= $(SRC:.c=.o)
+OBJS	= $(addprefix $(OBJ_PATH), $(OBJ))
 
-all : $(NAME)
+INC		= -I ./includes/
+
+all: $(NAME)
+
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	@mkdir -p $(OBJ_PATH)
+	$(CC) $(CFLAGS) -c $< -o $@ $(INC)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
-$(OBJS): %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
-
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJ_PATH)
 
 fclean: clean
 	rm -f $(NAME)
