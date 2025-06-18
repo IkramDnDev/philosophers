@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 typedef struct s_data {
     int nb_philo;
@@ -19,7 +20,10 @@ typedef struct s_data {
 int	ft_isdigit(int n);
 int	ft_atoi(const char *str);
 size_t	ft_strlen(const char *s);
-int ft_is_valid_arguments(int ac, char **av);
+void ft_is_valid_arguments(int ac, char **av);
 int fill_data(t_data *data, int ac, char **av);
+void error_input_digit(void);
+void error_num_philo(void);
+void error_usage(void);
 
 #endif

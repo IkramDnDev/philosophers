@@ -17,16 +17,12 @@ int main(int ac, char **av)
     t_data data;
     if (ac == 5 || ac == 6)
     {
-        if (!ft_is_valid_arguments(ac, av))
-            printf("Error: arguments not valid!\n");
+        ft_is_valid_arguments(ac, av);
         if (!fill_data(&data, ac, av))
 		    return (write(2, "Error: fill data failed\n", 25), 1);
         print_data(&data);
     }
     else
-    {
-        printf("Error: Invalid number of arguments\n");
-        exit(1);
-    }
+        error_usage();
     return (0);
 }

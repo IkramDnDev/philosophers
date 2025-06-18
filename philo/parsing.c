@@ -12,20 +12,21 @@ static int ft_all_is_digits(char *str)
     return(1);
 }
 
-int ft_is_valid_arguments(int ac, char **av)
+void ft_is_valid_arguments(int ac, char **av)
 {
     int i = 1;
     int n;
     while (i < ac)
     {
+        if (ft_atoi(av[1]) == 0)
+            error_num_philo();
         if (!ft_all_is_digits(av[i]))
-            return(0);
+            error_input_digit();
         n = ft_atoi(av[i]);
-        if (n <= 0 || n > INT_MAX)
-            return(0);
+        if (n < 0)
+            error_input_digit();
         i++;
     }
-    return(1);
 }
 
 int fill_data(t_data *data, int ac, char **av)

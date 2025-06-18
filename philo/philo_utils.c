@@ -12,35 +12,24 @@ size_t	ft_strlen(const char *str)
 	return (len);
 }
 
-static int	ft_overflow(int sign)
-{
-	if (sign == 1)
-		return (-1);
-	return (0);
-}
-
 int	ft_atoi(const char *str)
 {
 	long	res;
-	int		sign;
 	int		i;
 
 	res = 0;
-	sign = 1;
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\f'
 		|| str[i] == '\v' || str[i] == '\r' || str[i] == '\n')
 		i++;
-	if (str[i] == '+' || str[i] == '-')
-        return(0);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (res > (LONG_MAX - (str[i] - '0')) / 10)
-			return (ft_overflow(sign));
+		if (res > (INT_MAX - (str[i] - '0')) / 10)
+			error_input_digit();
 		res = res * 10 + (str[i] - '0');
 		i++;
 	}
-	return (res * sign);
+	return (res);
 }
 
 int	ft_isdigit(int n)
