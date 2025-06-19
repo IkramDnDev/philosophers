@@ -10,6 +10,8 @@ SRC		=	main.c \
 			philo_utils.c \
 			print_errors.c \
 			init.c \
+			philo_routine.c \
+			ft_free.c \
 
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)

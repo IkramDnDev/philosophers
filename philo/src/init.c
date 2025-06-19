@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:53 by idahhan           #+#    #+#             */
-/*   Updated: 2025/06/18 20:46:41 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/06/19 14:48:55 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,9 @@ static void	init_data(int ac, char **av, t_data *data)
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
 	if (ac == 6)
-	{
 		data->nb_must_eat = ft_atoi(av[5]);
-		data->has_optional_arg = 1;
-	}
-	else
-		data->has_optional_arg = 0;
+	else if (ac == 5)
+		data->nb_must_eat = -1;
 	data->start_time = 0;
 	data->alive = 1;
 	data->forks = NULL;
@@ -47,6 +44,7 @@ static int	init_philos(t_data *data)
 		data->philos[i].thread = 0;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->nb_philo];
+		data->philos[i].data = data;
 		i++;
 	}
 	return (1);
@@ -76,6 +74,5 @@ int	intialisation(int ac, char **av, t_data *data)
 	init_data(ac, av, data);
 	if (!init_mutexes(data) || !init_philos(data))
 		return (0);
-	print_data(data);
 	return (1);
 }
