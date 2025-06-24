@@ -21,6 +21,15 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+typedef enum e_status
+{
+    TAKING_FORK,
+    EATING,
+    SLEEPING,
+    THINKING,
+    DIED
+}   t_status;
+
 typedef struct s_philo	t_philo;
 
 typedef struct s_data
@@ -29,7 +38,7 @@ typedef struct s_data
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
-	int				nb_must_eat;                                                                                                   
+	int				nb_must_eat;
 	long			start_time; // Timestamp when simulation starts (used to calculate elapsed time for printing & death checking).
 	int 			alive; //	Flag to know if someone died (0 = dead,1 = alive).
 	pthread_mutex_t *forks;      //	Array of mutexes — one mutex per fork.
@@ -39,7 +48,7 @@ typedef struct s_data
 
 typedef struct s_philo
 {
-	int				id;
+	unsigned int	id;
 	int				meals_eaten;  //	Counter for how many times this philosopher has eaten (used if nb_must_eat provided).
 	long			last_meal; //the timestamp (in ms) when this philosopher last started eating.
 	pthread_mutex_t	*left_fork;
@@ -61,4 +70,5 @@ void				print_data(t_data *data);
 void				*philo_routine(void *philo);
 void				destroy_mutexes(t_data *data);
 long				get_timestamp(void);
+void				print_msg(t_philo *philo, t_status status);
 #endif

@@ -12,9 +12,26 @@
 
 #include "../include/philo.h"
 
+void philo_sleep(long time)
+{
+    long wake_up;
+    wake_up = get_timestamp() + time;
+    while (get_timestamp() < wake_up)
+    {
+        usleep(200);
+    }
+    //active sleeping thecnique
+}
+
 void *handle_one_philo(t_philo *philo)
 {
     pthread_mutex_lock(philo->left_fork);
+    print_msg(philo, TAKING_FORK);
+    pthread_mutex_unlock(philo->left_fork);
+    philo_sleep(philo->data->time_to_die);
+    print_msg(philo, DIED);
+    pthread_mutex_unlock(philo->left_fork);
+    return (NULL);
 }
 
 void *philo_routine(void *arg)
@@ -22,7 +39,7 @@ void *philo_routine(void *arg)
     t_philo *philo;
     philo = (t_philo *)arg;
     while (get_timestamp() < philo->data->start_time)
-        usleep(100);
+        continue;
     if (philo->id % 2 == 0)
         usleep(1000);
     while (philo->data->alive)
@@ -33,6 +50,6 @@ void *philo_routine(void *arg)
             && philo->meals_eaten >= philo->data->nb_must_eat)
             break;
     }
-	printf("i'm philo number : %d\n", ((t_philo *)philo)->id);
+	// printf("i'm philo number : %d\n", ((t_philo *)philo)->id);
 	return (NULL);
 }
