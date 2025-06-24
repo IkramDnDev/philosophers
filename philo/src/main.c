@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:14 by idahhan           #+#    #+#             */
-/*   Updated: 2025/06/19 15:10:31 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/06/20 20:31:46 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int create_threads(t_data *data)
 	t_philo *philos;
 	
 	philos = data->philos;
+	data->start_time = get_timestamp() + 1000;
 	i = 0;
 	while (i < data->nb_philo)
 	{

@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:57 by idahhan           #+#    #+#             */
-/*   Updated: 2025/06/18 18:01:58 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/06/20 16:01:39 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,11 @@ int	ft_isdigit(int n)
 	if (n >= '0' && n <= '9')
 		return (1);
 	return (0);
+}
+
+long get_timestamp(void)
+{
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return(tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
