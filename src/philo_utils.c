@@ -51,9 +51,42 @@ int	ft_isdigit(int n)
 	return (0);
 }
 
-long get_timestamp(void)
+void	*monitor_routine(void *arg)
 {
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	return(tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	t_data			*data;
+	t_philo			*philo;
+	unsigned int	i;
+	long			time_since_meal;
+
+	data = (t_data *)arg;
+	while (is_alive(data))
+	{
+		i = 0;
+		while (i < data->nb_philo)
+		{
+			philo = &data->philos[i];
+			time_since_meal = get_timestamp() - philo->last_meal;
+			if (time_since_meal >= data->time_to_die)
+			{
+				pthread_mutex_lock(&data->death_mutex);
+				data->alive = 0;
+				pthread_mutex_unlock(&data->death_mutex);
+				print_msg(philo, DIED);
+				return (NULL);
+			}
+			i++;
+		}
+		usleep(100);
+	}
+	return (NULL);
+}
+
+int	is_alive(t_data *data)
+{
+	int	result;
+
+	pthread_mutex_lock(&data->death_mutex);
+	result = data->alive;
+	pthread_mutex_unlock(&data->death_mutex);
+	return (result);
 }

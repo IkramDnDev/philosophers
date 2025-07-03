@@ -22,7 +22,7 @@ static void	init_data(int ac, char **av, t_data *data)
 		data->nb_must_eat = ft_atoi(av[5]);
 	else if (ac == 5)
 		data->nb_must_eat = -1;
-	data->start_time = 0;
+	data->start_time = get_timestamp() + 1000;
 	data->alive = 1;
 	data->forks = NULL;
 	data->philos = NULL;
@@ -40,7 +40,7 @@ static int	init_philos(t_data *data)
 	{
 		data->philos[i].id = i + 1;
 		data->philos[i].meals_eaten = 0;
-		data->philos[i].last_meal = 0;
+		data->philos[i].last_meal = data->start_time;
 		data->philos[i].thread = 0;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->nb_philo];

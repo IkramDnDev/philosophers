@@ -12,15 +12,15 @@
 
 #include "../include/philo.h"
 
-void destroy_mutexes(t_data *data)
+void	destroy_mutexes(t_data *data)
 {
-    unsigned int i;
+	unsigned int	i;
 
-    i = 0;
-    while (i < data->nb_philo)
-    {
-        pthread_mutex_destroy(&data->forks[i]);
-        i++;
-    }
-    pthread_mutex_destroy(&data->print_mutex);
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&data->print_mutex);
 }

@@ -1,17 +1,18 @@
 NAME	= philo
 CC		= cc
 CFLAGS	= -Werror -Wall -Wextra -pthread
-
+# -fsanitize=address -g
 SRC_PATH = src/
 OBJ_PATH = objects/
 
 SRC		=	main.c \
 			parsing.c \
 			philo_utils.c \
-			print_errors.c \
+			print.c \
 			init.c \
 			philo_routine.c \
 			ft_free.c \
+			time.c \
 
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)

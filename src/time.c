@@ -1,46 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 18:02:11 by idahhan           #+#    #+#             */
-/*   Updated: 2025/06/18 19:16:23 by idahhan          ###   ########.fr       */
+/*   Created: 2025/07/03 18:06:43 by idahhan           #+#    #+#             */
+/*   Updated: 2025/07/03 18:07:16 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static int	ft_all_is_digits(char *str)
+long	get_timestamp(void)
 {
-	size_t	i;
+	struct timeval	tv;
 
-	i = 0;
-	while (i < ft_strlen(str))
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	ft_is_valid_arguments(int ac, char **av)
+void	philo_sleep(long time)
 {
-	int	i;
-	int	n;
+	long	wake_up;
 
-	i = 1;
-	while (i < ac)
+	wake_up = get_timestamp() + time;
+	while (get_timestamp() < wake_up)
 	{
-		if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > 250)
-			error_num_philo();
-		if (!ft_all_is_digits(av[i]))
-			error_input_digit();
-		n = ft_atoi(av[i]);
-		if (n < 0)
-			error_input_digit();
-		i++;
+		usleep(200);
 	}
+	// active sleeping technique
 }
