@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:57 by idahhan           #+#    #+#             */
-/*   Updated: 2025/06/20 16:01:39 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/04 12:43:57 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ void	*monitor_routine(void *arg)
 		while (i < data->nb_philo)
 		{
 			philo = &data->philos[i];
+			pthread_mutex_lock(&philo->lock_last_meal);
 			time_since_meal = get_timestamp() - philo->last_meal;
+			pthread_mutex_unlock(&philo->lock_last_meal);
 			if (time_since_meal >= data->time_to_die)
 			{
 				pthread_mutex_lock(&data->death_mutex);

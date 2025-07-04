@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:06:43 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/03 18:07:16 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/04 12:42:04 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	philo_sleep(long time)
 	wake_up = get_timestamp() + time;
 	while (get_timestamp() < wake_up)
 	{
-		usleep(200);
+		usleep(100);
 	}
 	// active sleeping technique
 }
