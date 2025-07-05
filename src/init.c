@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:53 by idahhan           #+#    #+#             */
-/*   Updated: 2025/06/20 20:29:40 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/05 19:29:21 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,45 +28,97 @@ static void	init_data(int ac, char **av, t_data *data)
 	data->philos = NULL;
 }
 
-static int	init_philos(t_data *data)
+static int init_philos(t_data *data)
 {
-	unsigned int	i;
-
-	i = 0;
-	data->philos = malloc(sizeof(t_philo) * data->nb_philo);
-	if (!data->philos)
-		return (0);
-	while (i < data->nb_philo)
-	{
-		data->philos[i].id = i + 1;
-		data->philos[i].meals_eaten = 0;
-		data->philos[i].last_meal = data->start_time;
-		data->philos[i].thread = 0;
-		data->philos[i].left_fork = &data->forks[i];
-		data->philos[i].right_fork = &data->forks[(i + 1) % data->nb_philo];
-		data->philos[i].data = data;
-		i++;
-	}
-	return (1);
+    unsigned int i = 0;
+    
+    data->philos = malloc(sizeof(t_philo) * data->nb_philo);
+    if (!data->philos)
+        return (0);
+    
+    while (i < data->nb_philo)
+    {
+        data->philos[i].id = i + 1;
+        data->philos[i].meals_eaten = 0;
+        data->philos[i].last_meal = data->start_time;
+        data->philos[i].thread = 0;
+        data->philos[i].left_fork = &data->forks[i];
+        data->philos[i].right_fork = &data->forks[(i + 1) % data->nb_philo];
+        data->philos[i].data = data;
+        
+        // Initialize philosopher mutexes HERE (after memory is allocated)
+        if (pthread_mutex_init(&data->philos[i].lock_last_meal, NULL) != 0)
+        {
+            // Clean up previously initialized mutexes
+            while (i > 0)
+            {
+                i--;
+                pthread_mutex_destroy(&data->philos[i].lock_last_meal);
+                pthread_mutex_destroy(&data->philos[i].lock_meals);
+            }
+            free(data->philos);
+            return (0);
+        }
+        
+        if (pthread_mutex_init(&data->philos[i].lock_meals, NULL) != 0)
+        {
+            pthread_mutex_destroy(&data->philos[i].lock_last_meal);
+            // Clean up previously initialized mutexes
+            while (i > 0)
+            {
+                i--;
+                pthread_mutex_destroy(&data->philos[i].lock_last_meal);
+                pthread_mutex_destroy(&data->philos[i].lock_meals);
+            }
+            free(data->philos);
+            return (0);
+        }
+        
+        i++;
+    }
+    return (1);
 }
 
-static int	init_mutexes(t_data *data)
-{
-	unsigned int	i;
+// static int	init_mutexes(t_data *data)
+// {
+// 	unsigned int	i;
 
-	i = 0;
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-	if (!data->forks)
-		return (0);
-	while (i < data->nb_philo)
-	{
-		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (0);
-		i++;
-	}
-	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
-		return (0);
-	return (1);
+// 	i = 0;
+// 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
+// 	if (!data->forks)
+// 		return (0);
+// 	while (i < data->nb_philo)
+// 	{
+// 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
+// 			return (0);
+// 		i++;
+// 	}
+// 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+// 		return (0);
+// 	return (1);
+// }
+
+static int init_mutexes(t_data *data)
+{
+    unsigned int i = 0;
+    
+    data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
+    if (!data->forks)
+        return (0);
+    
+    while (i < data->nb_philo)
+    {
+        if (pthread_mutex_init(&data->forks[i], NULL) != 0)
+            return (0);
+        i++;
+    }
+    
+    // Only initialize global mutexes here
+    if (pthread_mutex_init(&data->print_mutex, NULL) != 0
+        || pthread_mutex_init(&data->death_mutex, NULL) != 0)
+        return (0);
+    
+    return (1);
 }
 
 int	intialisation(int ac, char **av, t_data *data)

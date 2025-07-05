@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 10:48:54 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/04 13:25:11 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/05 17:00:18 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void	eat(t_philo *philo)
 	pthread_mutex_lock(&philo->lock_last_meal);
 	philo->last_meal = get_timestamp();
 	pthread_mutex_unlock(&philo->lock_last_meal);
-	philo->meals_eaten++;
+	pthread_mutex_lock(&philo->lock_meals);
+    philo->meals_eaten++;
+    pthread_mutex_unlock(&philo->lock_meals);
 	philo_sleep(philo->data->time_to_eat);
 }
 
@@ -74,7 +76,7 @@ void	*philo_routine(void *arg)
 	philo->last_meal = get_timestamp();
 	pthread_mutex_unlock(&philo->lock_last_meal);
 	if (philo->id % 2 == 0)
-		usleep(1000);
+		usleep(philo->data->time_to_eat * 500); 
 	while (is_alive(philo->data))
 	{
 		if (philo->data->nb_philo == 1)
@@ -84,13 +86,13 @@ void	*philo_routine(void *arg)
 			take_forks(philo);
 			eat(philo);
 			release_forks(philo);
-			if (philo->data->nb_must_eat != -1
-				&& philo->meals_eaten >= philo->data->nb_must_eat)
-				return (NULL);
+			// if (philo->data->nb_must_eat != -1
+			// 	&& philo->meals_eaten >= philo->data->nb_must_eat)
+			// 	return (NULL);
 			print_msg(philo, SLEEPING);
 			philo_sleep(philo->data->time_to_sleep);
-			usleep(100);
 			print_msg(philo, THINKING);
+			usleep(100);
 		}
 	}
 	return (NULL);

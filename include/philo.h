@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 20:13:43 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/03 18:18:14 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/05 16:34:03 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_philo
 	int					meals_eaten;
 	long				last_meal;
 	pthread_mutex_t		lock_last_meal;
+	pthread_mutex_t		lock_meals;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_t			thread;
