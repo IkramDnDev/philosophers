@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:14 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/05 19:29:30 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/07 17:43:27 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,8 @@ int	main(int ac, char **av)
 		pthread_join(monitor_thread, NULL);
 		if (!join_threads(&data))
 			return (write(2, "Error: join threads failed\n", 25), 1);
-		// destroy_mutexes(&data);
-		free(data.philos);
-		free(data.forks);
+		destroy_data_mutexes(&data);
+		destroy_philo_mutexes(&data);
 	}
 	else
 		error_usage();

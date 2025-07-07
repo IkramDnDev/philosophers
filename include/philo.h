@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 20:13:43 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/05 16:34:03 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/07 14:29:20 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ void					error_usage(void);
 int						intialisation(int ac, char **av, t_data *data);
 void					print_data(t_data *data);
 void					*philo_routine(void *philo);
-void					destroy_mutexes(t_data *data);
 long					get_timestamp(void);
 void					print_msg(t_philo *philo, t_status status);
 void					*monitor_routine(void *arg);
 int						is_alive(t_data *data);
 void					philo_sleep(long time);
+void					destroy_philo_mutexes(t_data *data);
+void					destroy_data_mutexes(t_data *data);
 #endif

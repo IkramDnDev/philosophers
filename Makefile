@@ -1,12 +1,15 @@
 NAME	= philo
 CC		= cc
-CFLAGS	= -Werror -Wall -Wextra -pthread -fsanitize=address -g
+CFLAGS	= -Werror -Wall -Wextra -pthread 
+
+-fsanitize=address -g
 SRC_PATH = src/
 OBJ_PATH = objects/
 
 SRC		=	main.c \
 			parsing.c \
 			philo_utils.c \
+			libft_utils.c \
 			print.c \
 			init.c \
 			philo_routine.c \
