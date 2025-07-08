@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:14 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/07 17:43:27 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/08 15:26:38 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,6 @@
 void	f(void)
 {
 	system("leaks philo");
-}
-
-void	print_data(t_data *data)
-{
-	printf("Number of Philosophers: %d\n", data->nb_philo);
-	printf("Time to Die: %ld\n", data->time_to_die);
-	printf("Time to Eat: %ld\n", data->time_to_eat);
-	printf("Time to Sleep: %ld\n", data->time_to_sleep);
-	if (data->nb_must_eat != -1)
-		printf("Number of Must Eat: %d\n", data->nb_must_eat);
-	else
-		printf("No optional argument for number of must eat.\n");
 }
 
 int	create_threads(t_data *data)

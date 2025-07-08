@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:06:43 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/04 12:42:04 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/08 18:04:08 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,4 @@ void	philo_sleep(long time)
 	{
 		usleep(100);
 	}
-	// active sleeping technique
 }

@@ -15,6 +15,7 @@ SRC		=	main.c \
 			philo_routine.c \
 			ft_free.c \
 			time.c \
+			philo_actions.c \
 
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)

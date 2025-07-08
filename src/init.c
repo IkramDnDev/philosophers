@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:53 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/07 14:30:12 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/08 15:16:27 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,8 @@ static int	init_philos(t_data *data)
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->nb_philo];
 		data->philos[i].data = data;
-		if (pthread_mutex_init(&data->philos[i].lock_last_meal, NULL) != 0)
-		{
-			destroy_data_mutexes(data);
-			return (0);
-		}
-		if (pthread_mutex_init(&data->philos[i].lock_meals, NULL) != 0)
+		if (pthread_mutex_init(&data->philos[i].lock_last_meal, NULL) != 0
+			|| pthread_mutex_init(&data->philos[i].lock_meals, NULL) != 0)
 		{
 			destroy_data_mutexes(data);
 			return (0);

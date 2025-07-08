@@ -6,16 +6,16 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:57 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/07 14:18:16 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/08 18:14:25 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	all_philosophers_satisfied(t_data *data)
+static int	all_philosophers_satisfied(t_data *data)
 {
 	unsigned int	i;
-	int				satisfied_count;
+	unsigned int	satisfied_count;
 
 	satisfied_count = 0;
 	if (data->nb_must_eat == -1)
@@ -29,15 +29,43 @@ int	all_philosophers_satisfied(t_data *data)
 		pthread_mutex_unlock(&data->philos[i].lock_meals);
 		i++;
 	}
-	return (satisfied_count == (int)data->nb_philo);
+	return (satisfied_count == data->nb_philo);
+}
+
+static void	stop_simulation(t_data *data)
+{
+	pthread_mutex_lock(&data->death_mutex);
+	data->alive = 0;
+	pthread_mutex_unlock(&data->death_mutex);
+}
+
+static int	has_philo_died(t_data *data)
+{
+	unsigned int	i;
+	t_philo			*philo;
+	long			time_since_meal;
+
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		philo = &data->philos[i];
+		pthread_mutex_lock(&philo->lock_last_meal);
+		time_since_meal = get_timestamp() - philo->last_meal;
+		pthread_mutex_unlock(&philo->lock_last_meal);
+		if (time_since_meal >= data->time_to_die)
+		{
+			stop_simulation(data);
+			print_msg(philo, DIED);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 void	*monitor_routine(void *arg)
 {
-	t_data			*data;
-	t_philo			*philo;
-	unsigned int	i;
-	long			time_since_meal;
+	t_data	*data;
 
 	data = (t_data *)arg;
 	usleep(1000);
@@ -45,28 +73,11 @@ void	*monitor_routine(void *arg)
 	{
 		if (all_philosophers_satisfied(data))
 		{
-			pthread_mutex_lock(&data->death_mutex);
-			data->alive = 0;
-			pthread_mutex_unlock(&data->death_mutex);
+			stop_simulation(data);
 			return (NULL);
 		}
-		i = 0;
-		while (i < data->nb_philo)
-		{
-			philo = &data->philos[i];
-			pthread_mutex_lock(&philo->lock_last_meal);
-			time_since_meal = get_timestamp() - philo->last_meal;
-			pthread_mutex_unlock(&philo->lock_last_meal);
-			if (time_since_meal >= data->time_to_die)
-			{
-				pthread_mutex_lock(&data->death_mutex);
-				data->alive = 0;
-				pthread_mutex_unlock(&data->death_mutex);
-				print_msg(philo, DIED);
-				return (NULL);
-			}
-			i++;
-		}
+		if (has_philo_died(data))
+			return (NULL);
 		usleep(1000);
 	}
 	return (NULL);

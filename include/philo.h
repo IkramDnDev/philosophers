@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 20:13:43 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/07 14:29:20 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/08 18:13:40 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ typedef struct s_philo	t_philo;
 typedef struct s_data
 {
 	unsigned int		nb_philo;
-	time_t				time_to_die;
-	time_t				time_to_eat;
-	time_t				time_to_sleep;
+	long				time_to_die;
+	long				time_to_eat;
+	long				time_to_sleep;
 	int					nb_must_eat;
 	long				start_time;
 	int					alive;
@@ -52,8 +52,8 @@ typedef struct s_philo
 	unsigned int		id;
 	int					meals_eaten;
 	long				last_meal;
-	pthread_mutex_t		lock_last_meal;
 	pthread_mutex_t		lock_meals;
+	pthread_mutex_t		lock_last_meal;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_t			thread;
@@ -68,13 +68,15 @@ void					error_input_digit(void);
 void					error_num_philo(void);
 void					error_usage(void);
 int						intialisation(int ac, char **av, t_data *data);
-void					print_data(t_data *data);
 void					*philo_routine(void *philo);
 long					get_timestamp(void);
 void					print_msg(t_philo *philo, t_status status);
 void					*monitor_routine(void *arg);
 int						is_alive(t_data *data);
 void					philo_sleep(long time);
+void					eat(t_philo *philo);
+void					take_forks(t_philo *philo);
+void					release_forks(t_philo *philo);
 void					destroy_philo_mutexes(t_data *data);
 void					destroy_data_mutexes(t_data *data);
 #endif
