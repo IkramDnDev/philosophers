@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:57 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/08 18:14:25 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/11 17:54:55 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static int	all_philosophers_satisfied(t_data *data)
+int	is_alive(t_data *data)
+{
+	int	result;
+
+	pthread_mutex_lock(&data->death_mutex);
+	result = data->alive;
+	pthread_mutex_unlock(&data->death_mutex);
+	return (result);
+}
+
+int	all_philosophers_satisfied(t_data *data)
 {
 	unsigned int	i;
 	unsigned int	satisfied_count;
@@ -44,6 +54,7 @@ static int	has_philo_died(t_data *data)
 	unsigned int	i;
 	t_philo			*philo;
 	long			time_since_meal;
+	int				is_eating;
 
 	i = 0;
 	while (i < data->nb_philo)
@@ -51,10 +62,10 @@ static int	has_philo_died(t_data *data)
 		philo = &data->philos[i];
 		pthread_mutex_lock(&philo->lock_last_meal);
 		time_since_meal = get_timestamp() - philo->last_meal;
+		is_eating = philo->eating;
 		pthread_mutex_unlock(&philo->lock_last_meal);
-		if (time_since_meal >= data->time_to_die)
+		if (time_since_meal > data->time_to_die && !is_eating)
 		{
-			stop_simulation(data);
 			print_msg(philo, DIED);
 			return (1);
 		}
@@ -68,7 +79,6 @@ void	*monitor_routine(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
-	usleep(1000);
 	while (is_alive(data))
 	{
 		if (all_philosophers_satisfied(data))
@@ -77,18 +87,10 @@ void	*monitor_routine(void *arg)
 			return (NULL);
 		}
 		if (has_philo_died(data))
+		{
+			stop_simulation(data);
 			return (NULL);
-		usleep(1000);
+		}
 	}
 	return (NULL);
-}
-
-int	is_alive(t_data *data)
-{
-	int	result;
-
-	pthread_mutex_lock(&data->death_mutex);
-	result = data->alive;
-	pthread_mutex_unlock(&data->death_mutex);
-	return (result);
 }

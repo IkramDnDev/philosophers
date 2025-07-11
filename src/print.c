@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:05 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/03 18:25:55 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/11 11:15:00 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,21 @@ void	print_msg(t_philo *philo, t_status status)
 
 	pthread_mutex_lock(&philo->data->print_mutex);
 	timestamp = get_timestamp() - philo->data->start_time;
-	if (is_alive(philo->data) || status == DIED)
+	if (!is_alive(philo->data) && status != DIED)
 	{
-		printf("%ld %d ", timestamp, philo->id);
-		if (status == TAKING_FORK)
-			printf("has taken a fork\n");
-		else if (status == EATING)
-			printf("is eating\n");
-		else if (status == SLEEPING)
-			printf("is sleeping\n");
-		else if (status == THINKING)
-			printf("is thinking\n");
-		else if (status == DIED)
-			printf("died\n");
+		pthread_mutex_unlock(&philo->data->print_mutex);
+		return ;
 	}
+	printf("%ld %d ", timestamp, philo->id);
+	if (status == TAKING_FORK)
+		printf("has taken a fork\n");
+	else if (status == EATING)
+		printf("is eating\n");
+	else if (status == SLEEPING)
+		printf("is sleeping\n");
+	else if (status == THINKING)
+		printf("is thinking\n");
+	else if (status == DIED)
+		printf("died\n");
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }

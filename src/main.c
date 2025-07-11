@@ -6,16 +6,11 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:14 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/10 13:40:12 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/11 19:52:30 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/philo.h"
-
-void	f(void)
-{
-	system("leaks philo");
-}
+#include "../include/philo.h"
 
 int	create_threads(t_data *data)
 {
@@ -39,7 +34,7 @@ int	create_threads(t_data *data)
 	return (1);
 }
 
-int	join_threads(t_data *data)
+int	detach_threads(t_data *data)
 {
 	unsigned int	i;
 	t_philo			*philos;
@@ -48,9 +43,9 @@ int	join_threads(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		if (pthread_join(philos[i].thread, NULL) != 0)
+		if (pthread_detach(philos[i].thread) != 0)
 		{
-			write(2, "Error: join threads failed\n", 28);
+			write(2, "Error: detach threads failed\n", 28);
 			destroy_data_mutexes(data);
 			destroy_philo_mutexes(data);
 			return (0);
@@ -85,7 +80,6 @@ int	main(int ac, char **av)
 {
 	t_data	data;
 
-	// atexit(f);
 	if (ac == 5 || ac == 6)
 	{
 		ft_is_valid_arguments(ac, av);
@@ -98,7 +92,7 @@ int	main(int ac, char **av)
 			return (1);
 		if (!init_monitor(&data))
 			return (1);
-		if (!join_threads(&data))
+		if (!detach_threads(&data))
 			return (1);
 		destroy_data_mutexes(&data);
 		destroy_philo_mutexes(&data);

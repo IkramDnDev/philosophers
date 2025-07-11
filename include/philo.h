@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 20:13:43 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/10 13:39:11 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/11 11:31:03 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_philo
 	unsigned int		id;
 	int					meals_eaten;
 	long				last_meal;
+	int					eating;
 	pthread_mutex_t		lock_meals;
 	pthread_mutex_t		lock_last_meal;
 	pthread_mutex_t		*left_fork;
@@ -73,10 +74,8 @@ long					get_timestamp(void);
 void					print_msg(t_philo *philo, t_status status);
 void					*monitor_routine(void *arg);
 int						is_alive(t_data *data);
-void					philo_sleep(long time);
-void					eat(t_philo *philo);
-void					take_forks(t_philo *philo);
-void					release_forks(t_philo *philo);
+void					philo_sleep(long time, t_data *data);
 void					destroy_philo_mutexes(t_data *data);
 void					destroy_data_mutexes(t_data *data);
+int						all_philosophers_satisfied(t_data *data);
 #endif
