@@ -1,8 +1,6 @@
 NAME	= philo
 CC		= cc
-CFLAGS	= -Werror -Wall -Wextra -pthread 
-
--fsanitize=address -g
+CFLAGS	= -Werror -Wall -Wextra -pthread
 SRC_PATH = src/
 OBJ_PATH = objects/
 

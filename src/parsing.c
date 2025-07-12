@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:11 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/09 19:42:40 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/12 11:46:40 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	ft_is_valid_arguments(int ac, char **av)
 	i = 1;
 	if (ft_atoi(av[1]) < 1)
 		error_num_philo();
+	if (ft_atoi(av[2]) == 0 || ft_atoi(av[3]) == 0 || ft_atoi(av[4]) == 0)
+		exit(1);
 	while (i < ac)
 	{
 		if (!ft_all_is_digits(av[i]))

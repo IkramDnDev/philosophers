@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:14 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/11 19:52:30 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/12 11:44:45 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	create_threads(t_data *data)
 	return (1);
 }
 
-int	detach_threads(t_data *data)
+int	join_threads(t_data *data)
 {
 	unsigned int	i;
 	t_philo			*philos;
@@ -43,7 +43,7 @@ int	detach_threads(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		if (pthread_detach(philos[i].thread) != 0)
+		if (pthread_join(philos[i].thread, NULL) != 0)
 		{
 			write(2, "Error: detach threads failed\n", 28);
 			destroy_data_mutexes(data);
@@ -92,7 +92,7 @@ int	main(int ac, char **av)
 			return (1);
 		if (!init_monitor(&data))
 			return (1);
-		if (!detach_threads(&data))
+		if (!join_threads(&data))
 			return (1);
 		destroy_data_mutexes(&data);
 		destroy_philo_mutexes(&data);
