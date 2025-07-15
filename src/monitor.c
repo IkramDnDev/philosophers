@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:57 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/11 17:54:55 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/15 14:55:20 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	has_philo_died(t_data *data)
 		time_since_meal = get_timestamp() - philo->last_meal;
 		is_eating = philo->eating;
 		pthread_mutex_unlock(&philo->lock_last_meal);
-		if (time_since_meal > data->time_to_die && !is_eating)
+		if (time_since_meal > data->time_to_die)
 		{
 			print_msg(philo, DIED);
 			return (1);
@@ -81,12 +81,7 @@ void	*monitor_routine(void *arg)
 	data = (t_data *)arg;
 	while (is_alive(data))
 	{
-		if (all_philosophers_satisfied(data))
-		{
-			stop_simulation(data);
-			return (NULL);
-		}
-		if (has_philo_died(data))
+		if (all_philosophers_satisfied(data) || has_philo_died(data))
 		{
 			stop_simulation(data);
 			return (NULL);

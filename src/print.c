@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:05 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/11 11:15:00 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:49:41 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	print_msg(t_philo *philo, t_status status)
 	long	timestamp;
 
 	pthread_mutex_lock(&philo->data->print_mutex);
-	timestamp = get_timestamp() - philo->data->start_time;
 	if (!is_alive(philo->data) && status != DIED)
 	{
 		pthread_mutex_unlock(&philo->data->print_mutex);
 		return ;
 	}
+	timestamp = get_timestamp() - philo->data->start_time;
 	printf("%ld %d ", timestamp, philo->id);
 	if (status == TAKING_FORK)
 		printf("has taken a fork\n");

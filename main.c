@@ -6,11 +6,11 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:02:14 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/12 11:44:45 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:08:47 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "include/philo.h"
 
 int	create_threads(t_data *data)
 {
@@ -45,7 +45,7 @@ int	join_threads(t_data *data)
 	{
 		if (pthread_join(philos[i].thread, NULL) != 0)
 		{
-			write(2, "Error: detach threads failed\n", 28);
+			write(2, "Error: join threads failed\n", 28);
 			destroy_data_mutexes(data);
 			destroy_philo_mutexes(data);
 			return (0);

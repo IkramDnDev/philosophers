@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 10:48:54 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/11 19:52:03 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:07:45 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ static void	eat(t_philo *philo)
 	print_msg(philo, TAKING_FORK);
 	pthread_mutex_lock(philo->left_fork);
 	print_msg(philo, TAKING_FORK);
+	pthread_mutex_lock(&philo->lock_last_meal);
 	philo->eating = 1;
+	pthread_mutex_unlock(&philo->lock_last_meal);
 	print_msg(philo, EATING);
 	pthread_mutex_lock(&philo->lock_last_meal);
 	philo->last_meal = get_timestamp();
@@ -27,7 +29,9 @@ static void	eat(t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->lock_meals);
 	philo_sleep(philo->data->time_to_eat, philo->data);
+	pthread_mutex_lock(&philo->lock_last_meal);
 	philo->eating = 0;
+	pthread_mutex_unlock(&philo->lock_last_meal);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }
@@ -63,6 +67,7 @@ void	*philo_routine(void *arg)
 			print_msg(philo, SLEEPING);
 			philo_sleep(philo->data->time_to_sleep, philo->data);
 			print_msg(philo, THINKING);
+			usleep(100);
 		}
 	}
 	return (NULL);
