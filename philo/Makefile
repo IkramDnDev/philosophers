@@ -1,13 +1,12 @@
 NAME	= philo
 CC		= cc
-CFLAGS	= -Werror -Wall -Wextra -g -fsanitize=thread
+CFLAGS	= -Werror -Wall -Wextra
 SRC_PATH = src
 HEADER = include/philo.h
 
 SRCS =	main.c \
 		$(SRC_PATH)/parsing.c \
 		$(SRC_PATH)/monitor.c \
-		$(SRC_PATH)/libft_utils.c \
 		$(SRC_PATH)/print.c \
 		$(SRC_PATH)/init.c \
 		$(SRC_PATH)/philo_routine.c \

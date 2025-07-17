@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:01:57 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/15 14:55:20 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/16 10:27:40 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	has_philo_died(t_data *data)
 		time_since_meal = get_timestamp() - philo->last_meal;
 		is_eating = philo->eating;
 		pthread_mutex_unlock(&philo->lock_last_meal);
-		if (time_since_meal > data->time_to_die)
+		if (time_since_meal > data->time_to_die && !is_eating)
 		{
 			print_msg(philo, DIED);
 			return (1);

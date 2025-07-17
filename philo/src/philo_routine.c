@@ -6,7 +6,7 @@
 /*   By: idahhan <idahhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 10:48:54 by idahhan           #+#    #+#             */
-/*   Updated: 2025/07/15 15:07:45 by idahhan          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:10:07 by idahhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	*philo_routine(void *arg)
 			print_msg(philo, SLEEPING);
 			philo_sleep(philo->data->time_to_sleep, philo->data);
 			print_msg(philo, THINKING);
-			usleep(100);
 		}
 	}
 	return (NULL);
